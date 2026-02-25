@@ -46,30 +46,32 @@ function App() {
 
       {entered && (
         <div className="hud">
-          <div className="hud-title">
-            <span className="hud-logo">Echosphere</span>
-          </div>
+          <div className="hud-panel">
+            <div className="hud-title">
+              <span className="hud-logo">Echosphere</span>
+            </div>
 
-          <div className="layer-indicators">
-            {CRYSTALS.map((crystal) => {
-              const active = layerStates[crystal.layerIndex] ?? false
-              return (
-                <button
-                  key={crystal.label}
-                  className={`layer-pill ${active ? 'active' : ''}`}
-                  style={{ '--pill-color': crystal.color } as React.CSSProperties}
-                  onClick={() => handleToggle(crystal.layerIndex)}
-                >
-                  <span className="pill-dot" />
-                  <span className="pill-label">{crystal.label}</span>
-                </button>
-              )
-            })}
-          </div>
+            <div className="layer-indicators">
+              {CRYSTALS.map((crystal) => {
+                const active = layerStates[crystal.layerIndex] ?? false
+                return (
+                  <button
+                    key={crystal.label}
+                    className={`layer-pill ${active ? 'active' : ''}`}
+                    style={{ '--pill-color': crystal.color } as React.CSSProperties}
+                    onClick={() => handleToggle(crystal.layerIndex)}
+                  >
+                    <span className="pill-dot" />
+                    <span className="pill-label">{crystal.label}</span>
+                  </button>
+                )
+              })}
+            </div>
 
-          <p className="hud-hint">
-            {started ? 'Click planets to toggle immersive layers' : 'Initializing audio...'}
-          </p>
+            <p className="hud-hint">
+              {started ? 'Click planets to toggle immersive layers' : 'Initializing audio...'}
+            </p>
+          </div>
         </div>
       )}
     </div>

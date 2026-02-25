@@ -13,21 +13,26 @@ export default function DreamScene({ layerStates, onToggleLayer }: DreamScenePro
   return (
     <>
       <color attach="background" args={['#040a10']} />
-      <fog attach="fog" args={['#060e16', 8, 40]} />
+      <fog attach="fog" args={['#060e16', 10, 45]} />
 
-      <ambientLight intensity={0.26} color="#27495e" />
+      <ambientLight intensity={0.38} color="#32546b" />
       <directionalLight
         position={[7, 11, 6]}
-        intensity={0.48}
+        intensity={0.58}
         color="#80c0d0"
         castShadow
       />
-      <pointLight position={[0, 2.8, 0]} intensity={1.45} color="#30b0b0" distance={22} decay={2} />
-      <pointLight position={[-6, 4, -6]} intensity={0.7} color="#4080e0" distance={15} decay={2} />
-      <pointLight position={[6, 3, 4]} intensity={0.5} color="#e0a040" distance={12} decay={2} />
+      <directionalLight
+        position={[-9, 6, -7]}
+        intensity={0.36}
+        color="#8bb2dd"
+      />
+      <pointLight position={[0, 4.8, 7]} intensity={1.2} color="#88d0ff" distance={28} decay={1.8} />
+      <pointLight position={[-6, 4, -6]} intensity={0.82} color="#4080e0" distance={18} decay={2} />
+      <pointLight position={[6, 3, 4]} intensity={0.62} color="#e0a040" distance={16} decay={2} />
 
       <hemisphereLight
-        args={['#0a2030', '#040810', 0.35]}
+        args={['#21435a', '#03070f', 0.56]}
       />
 
       <Sky />

@@ -107,14 +107,22 @@ function Crystal({ config, active, onToggle }: CrystalProps) {
       const mesh = child as Mesh
       mesh.castShadow = true
       mesh.receiveShadow = true
-      mesh.material = cloneMaterial(mesh.material as Material | Material[])
+      const clonedMaterial = cloneMaterial(mesh.material as Material | Material[])
+      const materials = Array.isArray(clonedMaterial) ? clonedMaterial : [clonedMaterial]
+      materials.forEach((material) => {
+        if (!isStandardMaterial(material)) return
+        material.roughness = Math.min(material.roughness, 0.86)
+        material.metalness = Math.min(material.metalness, 0.18)
+        material.envMapIntensity = 0.9
+      })
+      mesh.material = clonedMaterial
     })
     cloned.scale.setScalar(getNormalizedScale(cloned, config.scale))
     return cloned
   }, [config.scale, gltf.scene])
 
   useEffect(() => {
-    const emissiveIntensity = active ? 0.2 : hovered ? 0.08 : 0
+    const emissiveIntensity = active ? 0.26 : hovered ? 0.12 : 0.04
     model.traverse((child) => {
       if (!('isMesh' in child) || !child.isMesh) return
       const mesh = child as Mesh
@@ -133,7 +141,7 @@ function Crystal({ config, active, onToggle }: CrystalProps) {
       planetRef.current.rotation.x = Math.sin(planetRef.current.rotation.y * 0.5) * 0.05
     }
     if (pointLightRef.current) {
-      const targetIntensity = active ? 1.8 : hovered ? 0.85 : 0.22
+      const targetIntensity = active ? 2.2 : hovered ? 1.15 : 0.65
       pointLightRef.current.intensity += (targetIntensity - pointLightRef.current.intensity) * Math.min(1, delta * 5)
     }
     if (groupRef.current) {
@@ -166,9 +174,10 @@ function Crystal({ config, active, onToggle }: CrystalProps) {
 
         <pointLight
           ref={pointLightRef}
+          position={[0.7, 0.5, 0.8]}
           color={config.emissive}
-          intensity={0.22}
-          distance={active ? 9 : 7}
+          intensity={0.65}
+          distance={active ? 13 : 10}
           decay={2}
         />
       </group>

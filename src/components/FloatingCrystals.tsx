@@ -14,6 +14,12 @@ interface CrystalConfig {
   modelPath: string
 }
 
+const PLANET_MODELS_BASE_URL = `${import.meta.env.BASE_URL}models/planets/`
+
+function planetModelPath(fileName: string): string {
+  return `${PLANET_MODELS_BASE_URL}${fileName}`
+}
+
 const CRYSTALS: CrystalConfig[] = [
   {
     position: [-3.6, 1.9, 0.35],
@@ -22,7 +28,7 @@ const CRYSTALS: CrystalConfig[] = [
     scale: 1,
     layerIndex: 0,
     label: 'Sub Current',
-    modelPath: '/models/planets/neptune.glb',
+    modelPath: planetModelPath('neptune.glb'),
   },
   {
     position: [3.3, 2.15, -0.2],
@@ -31,7 +37,7 @@ const CRYSTALS: CrystalConfig[] = [
     scale: 1.05,
     layerIndex: 1,
     label: 'Resonance',
-    modelPath: '/models/planets/earth.glb',
+    modelPath: planetModelPath('earth.glb'),
   },
   {
     position: [0, 2.5, -3.6],
@@ -40,7 +46,7 @@ const CRYSTALS: CrystalConfig[] = [
     scale: 1.2,
     layerIndex: 2,
     label: 'Pulse Sequence',
-    modelPath: '/models/planets/jupiter.glb',
+    modelPath: planetModelPath('jupiter.glb'),
   },
   {
     position: [-2.2, 1.75, 3.1],
@@ -49,7 +55,7 @@ const CRYSTALS: CrystalConfig[] = [
     scale: 0.78,
     layerIndex: 3,
     label: 'Atmosphere',
-    modelPath: '/models/planets/mercury.glb',
+    modelPath: planetModelPath('mercury.glb'),
   },
   {
     position: [2.1, 1.95, 3.05],
@@ -58,7 +64,7 @@ const CRYSTALS: CrystalConfig[] = [
     scale: 0.92,
     layerIndex: 4,
     label: 'Shimmer',
-    modelPath: '/models/planets/mars.glb',
+    modelPath: planetModelPath('mars.glb'),
   },
 ]
 

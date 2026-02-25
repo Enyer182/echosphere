@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react'
 import { Canvas } from '@react-three/fiber'
 import DreamScene from './components/DreamScene'
 import { useAudioEngine } from './hooks/useAudioEngine'
-import { CRYSTALS } from './components/FloatingCrystals'
+import { NODE_CONFIGS } from './components/ResonantNodes'
 import './App.css'
 
 function App() {
@@ -35,7 +35,7 @@ function App() {
           <div className="start-content">
             <h1 className="start-title">Echosphere</h1>
             <p className="start-subtitle">A generative audio-visual experience</p>
-            <p className="start-hint">Explore a luminous terrain and awaken sound layers<br />by touching the orbiting planets</p>
+            <p className="start-hint">Explore a luminous terrain and awaken sound layers<br />by touching the resonant spires</p>
             <button className="start-button" onClick={handleEnter}>
               Begin
             </button>
@@ -52,24 +52,24 @@ function App() {
             </div>
 
             <div className="layer-indicators">
-              {CRYSTALS.map((crystal) => {
-                const active = layerStates[crystal.layerIndex] ?? false
+              {NODE_CONFIGS.map((node) => {
+                const active = layerStates[node.layerIndex] ?? false
                 return (
                   <button
-                    key={crystal.label}
+                    key={node.label}
                     className={`layer-pill ${active ? 'active' : ''}`}
-                    style={{ '--pill-color': crystal.color } as React.CSSProperties}
-                    onClick={() => handleToggle(crystal.layerIndex)}
+                    style={{ '--pill-color': node.color } as React.CSSProperties}
+                    onClick={() => handleToggle(node.layerIndex)}
                   >
                     <span className="pill-dot" />
-                    <span className="pill-label">{crystal.label}</span>
+                    <span className="pill-label">{node.label}</span>
                   </button>
                 )
               })}
             </div>
 
             <p className="hud-hint">
-              {started ? 'Click planets to toggle immersive layers' : 'Initializing audio...'}
+              {started ? 'Click spires to toggle immersive layers' : 'Initializing audio...'}
             </p>
           </div>
         </div>

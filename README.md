@@ -55,7 +55,7 @@ src/
 ├── components/
 │   ├── DreamScene.tsx         # Scene composition (lights, fog, camera)
 │   ├── Terrain.tsx            # Procedural FBM terrain mesh
-│   ├── FloatingCrystals.tsx   # Interactive orbiting planet nodes
+│   ├── ResonantNodes.tsx      # Interactive spiky resonant nodes
 │   ├── ParticleField.tsx      # Dust + sparkle particles
 │   └── Sky.tsx                # Starfield
 ├── hooks/

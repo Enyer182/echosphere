@@ -1,6 +1,6 @@
 import { OrbitControls } from '@react-three/drei'
 import Terrain from './Terrain'
-import FloatingCrystals from './FloatingCrystals'
+import ResonantNodes from './ResonantNodes'
 import ParticleField from './ParticleField'
 import Sky from './Sky'
 
@@ -37,7 +37,7 @@ export default function DreamScene({ layerStates, onToggleLayer }: DreamScenePro
 
       <Sky />
       <Terrain />
-      <FloatingCrystals layerStates={layerStates} onToggleLayer={onToggleLayer} />
+      <ResonantNodes layerStates={layerStates} onToggleLayer={onToggleLayer} />
       <ParticleField />
 
       <OrbitControls

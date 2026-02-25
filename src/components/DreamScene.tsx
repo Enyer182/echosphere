@@ -15,14 +15,14 @@ export default function DreamScene({ layerStates, onToggleLayer }: DreamScenePro
       <color attach="background" args={['#040a10']} />
       <fog attach="fog" args={['#060e16', 8, 40]} />
 
-      <ambientLight intensity={0.14} color="#204050" />
+      <ambientLight intensity={0.26} color="#27495e" />
       <directionalLight
         position={[7, 11, 6]}
-        intensity={0.3}
+        intensity={0.48}
         color="#80c0d0"
         castShadow
       />
-      <pointLight position={[0, 2.8, 0]} intensity={1.3} color="#30b0b0" distance={22} decay={2} />
+      <pointLight position={[0, 2.8, 0]} intensity={1.45} color="#30b0b0" distance={22} decay={2} />
       <pointLight position={[-6, 4, -6]} intensity={0.7} color="#4080e0" distance={15} decay={2} />
       <pointLight position={[6, 3, 4]} intensity={0.5} color="#e0a040" distance={12} decay={2} />
 

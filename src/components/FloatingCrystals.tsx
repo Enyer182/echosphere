@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Center, Float, useGLTF } from '@react-three/drei'
-import { Vector3 } from 'three'
-import type { Group, Material, Mesh, MeshStandardMaterial } from 'three'
+import { Box3, Vector3 } from 'three'
+import type { Group, Material, Mesh, MeshStandardMaterial, PointLight } from 'three'
 
 interface CrystalConfig {
   position: [number, number, number]
@@ -68,7 +68,7 @@ const CRYSTALS: CrystalConfig[] = [
   },
 ]
 
-const MODEL_WORLD_SCALE = 0.0012
+const DEFAULT_MODEL_SCALE = 0.0012
 
 function cloneMaterial(material: Material | Material[]) {
   if (Array.isArray(material)) return material.map((entry) => entry.clone())
@@ -79,6 +79,14 @@ function isStandardMaterial(material: Material): material is MeshStandardMateria
   return 'emissive' in material && 'emissiveIntensity' in material
 }
 
+function getNormalizedScale(model: Group, desiredRadius: number): number {
+  const size = new Vector3()
+  new Box3().setFromObject(model).getSize(size)
+  const maxDimension = Math.max(size.x, size.y, size.z)
+  if (maxDimension <= 0) return DEFAULT_MODEL_SCALE * desiredRadius
+  return (desiredRadius * 2) / maxDimension
+}
+
 interface CrystalProps {
   config: CrystalConfig
   active: boolean
@@ -87,7 +95,7 @@ interface CrystalProps {
 
 function Crystal({ config, active, onToggle }: CrystalProps) {
   const planetRef = useRef<Group>(null)
-  const glowRef = useRef<Mesh>(null)
+  const pointLightRef = useRef<PointLight>(null)
   const groupRef = useRef<Group>(null)
   const [hovered, setHovered] = useState(false)
   const gltf = useGLTF(config.modelPath)
@@ -101,11 +109,12 @@ function Crystal({ config, active, onToggle }: CrystalProps) {
       mesh.receiveShadow = true
       mesh.material = cloneMaterial(mesh.material as Material | Material[])
     })
+    cloned.scale.setScalar(getNormalizedScale(cloned, config.scale))
     return cloned
-  }, [gltf.scene])
+  }, [config.scale, gltf.scene])
 
   useEffect(() => {
-    const emissiveIntensity = active ? 0.95 : hovered ? 0.45 : 0.15
+    const emissiveIntensity = active ? 0.2 : hovered ? 0.08 : 0
     model.traverse((child) => {
       if (!('isMesh' in child) || !child.isMesh) return
       const mesh = child as Mesh
@@ -118,20 +127,17 @@ function Crystal({ config, active, onToggle }: CrystalProps) {
     })
   }, [active, config.emissive, hovered, model])
 
-  useFrame((state, delta) => {
+  useFrame((_, delta) => {
     if (planetRef.current) {
-      planetRef.current.rotation.y += delta * 0.24
-      planetRef.current.rotation.x += delta * 0.05
+      planetRef.current.rotation.y += delta * (0.18 + config.layerIndex * 0.015)
+      planetRef.current.rotation.x = Math.sin(planetRef.current.rotation.y * 0.5) * 0.05
     }
-    if (glowRef.current) {
-      glowRef.current.rotation.y -= delta * 0.3
-      glowRef.current.rotation.z += delta * 0.15
-      const pulse = Math.sin(state.clock.elapsedTime * 2 + config.layerIndex) * 0.04
-      const baseScale = config.scale * (active ? 0.98 : hovered ? 0.85 : 0.75)
-      glowRef.current.scale.setScalar(baseScale + pulse)
+    if (pointLightRef.current) {
+      const targetIntensity = active ? 1.8 : hovered ? 0.85 : 0.22
+      pointLightRef.current.intensity += (targetIntensity - pointLightRef.current.intensity) * Math.min(1, delta * 5)
     }
     if (groupRef.current) {
-      const targetScale = hovered ? 1.15 : 1
+      const targetScale = hovered ? 1.08 : 1
       groupRef.current.scale.lerp(
         new Vector3(targetScale, targetScale, targetScale),
         delta * 5,
@@ -141,9 +147,9 @@ function Crystal({ config, active, onToggle }: CrystalProps) {
 
   return (
     <Float
-      speed={1.5}
-      rotationIntensity={0.2}
-      floatIntensity={0.6}
+      speed={1.2}
+      rotationIntensity={0.1}
+      floatIntensity={0.35}
       position={config.position}
     >
       <group
@@ -154,37 +160,17 @@ function Crystal({ config, active, onToggle }: CrystalProps) {
       >
         <group ref={planetRef}>
           <Center>
-            <primitive object={model} scale={MODEL_WORLD_SCALE * config.scale} />
+            <primitive object={model} />
           </Center>
         </group>
 
-        <mesh ref={glowRef} scale={config.scale * 0.8}>
-          <sphereGeometry args={[1, 32, 32]} />
-          <meshBasicMaterial
-            color={config.emissive}
-            transparent
-            opacity={active ? 0.16 : hovered ? 0.09 : 0.05}
-            wireframe
-          />
-        </mesh>
-
         <pointLight
+          ref={pointLightRef}
           color={config.emissive}
-          intensity={active ? 10 : hovered ? 3.5 : 1}
-          distance={active ? 12 : 6}
+          intensity={0.22}
+          distance={active ? 9 : 7}
           decay={2}
         />
-
-        {active && (
-          <mesh scale={config.scale * 1.6}>
-            <sphereGeometry args={[1, 20, 20]} />
-            <meshBasicMaterial
-              color={config.emissive}
-              transparent
-              opacity={0.08}
-            />
-          </mesh>
-        )}
       </group>
     </Float>
   )
@@ -198,23 +184,6 @@ interface FloatingCrystalsProps {
 export default function FloatingCrystals({ layerStates, onToggleLayer }: FloatingCrystalsProps) {
   return (
     <group>
-      <mesh position={[0, 2.05, -0.2]}>
-        <sphereGeometry args={[0.36, 32, 32]} />
-        <meshStandardMaterial
-          color="#9fdcf5"
-          emissive="#3da0cf"
-          emissiveIntensity={1.35}
-          metalness={0.2}
-          roughness={0.18}
-          transparent
-          opacity={0.85}
-        />
-      </mesh>
-      <mesh position={[0, 2.05, -0.2]} rotation={[Math.PI / 2, 0, 0]}>
-        <torusGeometry args={[0.56, 0.03, 16, 64]} />
-        <meshBasicMaterial color="#4ec7ff" transparent opacity={0.35} />
-      </mesh>
-
       {CRYSTALS.map((config) => (
         <Crystal
           key={config.label}

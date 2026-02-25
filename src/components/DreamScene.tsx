@@ -15,14 +15,14 @@ export default function DreamScene({ layerStates, onToggleLayer }: DreamScenePro
       <color attach="background" args={['#040a10']} />
       <fog attach="fog" args={['#060e16', 8, 40]} />
 
-      <ambientLight intensity={0.1} color="#204050" />
+      <ambientLight intensity={0.14} color="#204050" />
       <directionalLight
-        position={[8, 12, -5]}
-        intensity={0.25}
+        position={[7, 11, 6]}
+        intensity={0.3}
         color="#80c0d0"
         castShadow
       />
-      <pointLight position={[0, 6, 0]} intensity={1.2} color="#30b0b0" distance={20} decay={2} />
+      <pointLight position={[0, 2.8, 0]} intensity={1.3} color="#30b0b0" distance={22} decay={2} />
       <pointLight position={[-6, 4, -6]} intensity={0.7} color="#4080e0" distance={15} decay={2} />
       <pointLight position={[6, 3, 4]} intensity={0.5} color="#e0a040" distance={12} decay={2} />
 
@@ -39,14 +39,14 @@ export default function DreamScene({ layerStates, onToggleLayer }: DreamScenePro
         enablePan={false}
         enableZoom
         autoRotate
-        autoRotateSpeed={0.15}
+        autoRotateSpeed={0.12}
         minDistance={5}
         maxDistance={25}
-        minPolarAngle={Math.PI * 0.15}
-        maxPolarAngle={Math.PI * 0.55}
+        minPolarAngle={Math.PI * 0.2}
+        maxPolarAngle={Math.PI * 0.75}
         dampingFactor={0.05}
         enableDamping
-        target={[0, 0, 0]}
+        target={[0, 2, 0]}
       />
     </>
   )

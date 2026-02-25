@@ -22,7 +22,7 @@ function App() {
     <div className="app">
       <div className="canvas-container">
         <Canvas
-          camera={{ fov: 55, position: [0, 4, 12], near: 0.1, far: 100 }}
+          camera={{ fov: 55, position: [0, 3.4, 12], near: 0.1, far: 100 }}
           dpr={[1, 1.5]}
           shadows
         >
@@ -35,11 +35,11 @@ function App() {
           <div className="start-content">
             <h1 className="start-title">Echosphere</h1>
             <p className="start-subtitle">A generative audio-visual experience</p>
-            <p className="start-hint">Explore a luminous terrain and awaken sound layers<br />by touching the resonant nodes</p>
+            <p className="start-hint">Explore a luminous terrain and awaken sound layers<br />by touching the orbiting planets</p>
             <button className="start-button" onClick={handleEnter}>
               Begin
             </button>
-            <p className="start-credit">Built with React Three Fiber + Web Audio API</p>
+            <p className="start-credit">Built with React Three Fiber + Tone.js</p>
           </div>
         </div>
       )}
@@ -68,7 +68,7 @@ function App() {
           </div>
 
           <p className="hud-hint">
-            {started ? 'Click nodes to toggle sound layers' : 'Initializing audio...'}
+            {started ? 'Click planets to toggle immersive layers' : 'Initializing audio...'}
           </p>
         </div>
       )}

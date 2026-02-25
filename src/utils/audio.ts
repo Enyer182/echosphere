@@ -156,7 +156,7 @@ function createPadLayer(buses: LayerBuses): AudioLayer {
     if (layer.active) return
     layer.active = true
     chordIndex = 0
-    progression.start(0)
+    progression.start(Tone.Transport.seconds)
     pad.triggerAttackRelease(PAD_CHORDS[0], '2m', Tone.now(), 0.55)
     chordIndex = 1
     routing.volume.volume.rampTo(-11, 2.2)
@@ -165,7 +165,7 @@ function createPadLayer(buses: LayerBuses): AudioLayer {
   layer.stop = () => {
     if (!layer.active) return
     layer.active = false
-    progression.stop(0)
+    progression.stop(Tone.Transport.seconds)
     pad.releaseAll(Tone.now() + 0.2)
     routing.volume.volume.rampTo(-Infinity, 1.1)
   }
@@ -217,14 +217,14 @@ function createArpLayer(buses: LayerBuses): AudioLayer {
   layer.start = () => {
     if (layer.active) return
     layer.active = true
-    sequence.start(0)
+    sequence.start(Tone.Transport.seconds)
     routing.volume.volume.rampTo(-13, 0.8)
   }
 
   layer.stop = () => {
     if (!layer.active) return
     layer.active = false
-    sequence.stop(0)
+    sequence.stop(Tone.Transport.seconds)
     routing.volume.volume.rampTo(-Infinity, 0.5)
   }
 
@@ -332,14 +332,14 @@ function createChimeLayer(buses: LayerBuses): AudioLayer {
   layer.start = () => {
     if (layer.active) return
     layer.active = true
-    loop.start(0)
+    loop.start(Tone.Transport.seconds)
     routing.volume.volume.rampTo(-15, 1.1)
   }
 
   layer.stop = () => {
     if (!layer.active) return
     layer.active = false
-    loop.stop(0)
+    loop.stop(Tone.Transport.seconds)
     routing.volume.volume.rampTo(-Infinity, 0.9)
   }
 
